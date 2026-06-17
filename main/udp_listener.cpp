@@ -22,7 +22,6 @@ void udpListenerBegin() {
 }
 void udpListenerLoop() {
     // Auto-heal if socket dropped
-    delay(1);
     if (!udpReady) {
         Serial.println("[udp] Restarting socket");
         startSocket();

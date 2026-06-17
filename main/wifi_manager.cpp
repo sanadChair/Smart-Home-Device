@@ -1,6 +1,7 @@
 #include "wifi_manager.h"
+#include "setup_mode.h"
 #include "device_state.h"
-
+#include "button_handler.h"
 #include <ESP8266WiFi.h>
 
 static bool attemptConnect() {
@@ -22,6 +23,7 @@ static bool attemptConnect() {
 
 void wifiManagerConnect() {
     for (int attempt = 1; attempt <= WIFI_MAX_RETRIES; attempt++) {
+        buttonHandlerLoop();
         Serial.printf("[wifi] Attempt %d / %d\n", attempt, WIFI_MAX_RETRIES);
         if (attemptConnect()) {
             Serial.println("[wifi] Connected — IP: " + WiFi.localIP().toString());
@@ -37,9 +39,9 @@ void wifiManagerConnect() {
 
     // All retries exhausted — restart (do NOT fall back to setup mode;
     // the failure may be transient per §5.1).
-    Serial.println("[wifi] All retries failed — restarting");
+    Serial.println("[wifi] All retries failed — entering setup mode");
     delay(500);
-    ESP.restart();
+    setupModeBegin();
 }
 
 bool wifiManagerMaintain() {

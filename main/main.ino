@@ -45,19 +45,16 @@ void setup() {
         setupModeBegin();   // Does not return; reboots on success
     }
 
-    // ── 4. Wi-Fi connection (STA) ─────────────────────────────────────────────
+
+    // ── 5. Wi-Fi connection (STA) ─────────────────────────────────────────────
     Serial.println("[main] Entering OPERATIONAL MODE");
     wifiManagerConnect();   // Blocks; restarts device on failure
 
-    // ── 5. UDP discovery listener ─────────────────────────────────────────────
+    // ── 6. UDP discovery listener ─────────────────────────────────────────────
     udpListenerBegin();
 
-    // ── 6. HTTP REST server ───────────────────────────────────────────────────
+    // ── 7. HTTP REST server ───────────────────────────────────────────────────
     httpServerBegin();
-
-    // ── 7. Button handler — MUST be last ─────────────────────────────────────
-    // Arming here ensures any LOW on GPIO 0 during boot is ignored.
-    buttonHandlerInit();
 
     Serial.println("[main] ── Ready ──────────────────────────────");
 }
@@ -81,4 +78,5 @@ void loop() {
     udpListenerLoop();
     httpServerLoop();
     buttonHandlerLoop();
+    delay(10);
 }
